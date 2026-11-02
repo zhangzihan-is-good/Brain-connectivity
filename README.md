@@ -238,29 +238,6 @@ python -B ABIDE/run.py --mode supplements --execute --action summarize --data-wo
 
 **Interpretation:** `protocol.full_labels_used_for_F=true` in `selected_configurations.json` means supervised F screening uses train, validation and test labels. The resulting AUROC describes discrimination under this screening design rather than independent held-out feature selection. Only RGIC received the broad validation search, with comparator methods using matched selected settings. Demographics enter the classifier, not the RGIC formula. Fixed feature columns still involve classifier refitting; truncation/noise experiments refit classifiers under each condition.
 
-## Shared RGIC implementation and checks
-
-IC version `0.1.0a3` is pinned at [58625fc4a3afd69d451f27b5c279a3c2a3cae90f](https://github.com/zhangzihan-is-good/IC/commit/58625fc4a3afd69d451f27b5c279a3c2a3cae90f). `_vendor/IC_PROVENANCE.json` records the selected unmodified runtime source, required CLI resource, notice and synthetic upstream checks.
-
-The required CLI manual resource retains its upstream text and hash. Installation and example paths in that resource refer to the complete upstream IC checkout; use this root README's commands for the selected source bundled here.
-
-The shared adapter calls the pinned `_gate` and `_potential` primitives. A numerical profile specifies arithmetic precision, operation order, normalization scope and directional readout for an experiment. Direct compensation profiles use exp/multiply arithmetic, while the public IC API uses log-space arithmetic. HCP consumes cached group gates/potentials and shares their fusion. ABIDE uses its training-group gate and selected normalization percentile. Each experiment selects its numerical profile through the shared interface.
-
-| Code term | Meaning |
-| --- | --- |
-| `r0` | Signed zero-lag Pearson correlation; HCP uses its signed group mean. |
-| `mean_gain`, `mean_cost` | Group-mean nonnegative lag-related correlation gain, and mean lag cost over recordings with positive gain (zero if none qualify). `cost` is absolute lag in the profile's seconds or sampling-interval units. |
-| `raw_eta` | Gate evidence before percentile normalization. For the group profile, `raw_eta = R * mean_gain * exp(-lambda * mean_cost)`, where `R=F*L*S`. HCP reads this cached quantity as a separate predictor. |
-| `eta` | Gate weight after normalization and clipping to `[0,1]`; normalization scope and percentile follow the experiment's profile. HCP uses its cached `eta` directly. |
-| `potential` (`P`) | Signed lag-peak correlation after amplitude compensation and capping: `sign(rho_peak) * min(abs(rho_peak) * exp(gamma * cost), cap)`. HCP uses the signed mean of recording-level potentials. |
-| `alpha` | ABIDE correction multiplier: `IC = r0 + alpha * eta * (P-r0)`. It differs from the classifier's direction-feature weight `beta`. With `alpha=1`, the shared blend is `IC = (1-eta)*r0 + eta*P`. |
-
-HNU and ABIDE share the same native estimator implementation; project-specific edge order, lag/tie policies, dtype, reference selection, group aggregation and directional readouts remain explicit. The upstream `rgic` namespace is isolated from HNU's local `rgic.py`.
-
-Run `python -B run_tests.py` for the checks included in this checkout: pinned upstream source hashes, synthetic reference/target separation, known lag direction, input/order validation, numerical profiles and file round trips. These checks generate their inputs locally. Lag direction characterizes observed BOLD temporal ordering; native strength errors compare estimators with different scales.
-
-For code issues, include the command, environment, a minimal synthetic reproducer and expected/actual behavior.
-
 ## AI assistance and human responsibility
 
 Development used AI-assisted coding for implementation, testing and documentation. Human authors are responsible for reviewing the mathematical definitions, reference-state isolation, input handling, numerical behavior, experimental protocols and scientific interpretation, and for correctness and release decisions.
