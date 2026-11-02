@@ -196,7 +196,7 @@ The runner evaluates the fixed configurations in `HNU/models.json`. Additional `
 
 **Implemented analyses:** autism classification, direction representation, component removal, demographic inputs, low-motion subsets, signal-length and measurement-noise analyses.
 
-Classifier implementations include SVM, logistic regression, FCN, GCN, LSTM, Transformer and MADE. The main runner refits SVM, logistic regression, FCN, GCN and LSTM using the fixed configurations keyed by classifier, atlas, lag window and fold in `ABIDE/configs/main_models.json`; runner options are listed by `--help`.
+Classifier implementations include SVM, logistic regression, FCN, GCN, LSTM, Transformer and MADE; runner options are listed by `--help`.
 
 ABIDE has one public launcher, `ABIDE/run.py`. Its implementation is organized as follows:
 
