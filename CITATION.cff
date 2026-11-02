@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "Cite this software and the associated manuscript identified in README.md; record the Git commit used for the analysis."
+type: software
+title: "Brain-connectivity: RGIC research code"
+authors:
+  - family-names: Zhang
+    given-names: Zihan
+  - family-names: Gao
+    given-names: Junhao
+  - family-names: Christopoulos
+    given-names: Georgios
+  - family-names: Ding
+    given-names: Xiao
+  - family-names: Chen
+    given-names: Yuting
+  - family-names: Du
+    given-names: Juntong
+  - family-names: Liang
+    given-names: Xia
+  - family-names: Qin
+    given-names: Bing
+  - family-names: Liu
+    given-names: Ting
+repository-code: "https://github.com/zhangzihan-is-good/Brain-connectivity"
+url: "https://github.com/zhangzihan-is-good/Brain-connectivity"
+license: MIT
+abstract: "Research code for Mapping human brain connectivity through reliable temporal relationships, covering simulated signals, HCP anatomical-connectivity prediction, HNU test-retest analyses and ABIDE classification."
