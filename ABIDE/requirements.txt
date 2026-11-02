@@ -6,4 +6,4 @@ h5py==3.6.0
 torch==2.5.1+cu121
 threadpoolctl
 pandas
-# Plot newly generated summaries: code/figures/requirements.txt
+# Plot newly generated summaries: figures/requirements.txt

@@ -29,9 +29,6 @@ verification/
 *.log
 **/.mplconfig/
 
-# Participant-linked input contract supplied separately for local HNU runs.
-/HNU/input_config.json
-
 # One consolidated reader guide. This does not remove already tracked files.
 **/[Rr][Ee][Aa][Dd][Mm][Ee]*
 !/README.md

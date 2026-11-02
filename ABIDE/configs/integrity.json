@@ -118,8 +118,8 @@
     },
     {
       "path": "requirements.txt",
-      "bytes": 254,
-      "sha256": "93e11748a37815d83b1d32832552e985634b5fcf8cd9b4918275ad5a8b6e5144"
+      "bytes": 249,
+      "sha256": "e9c4f5c676c850b92ce8646b345fc84321cd54c2c0fd34d7bdfd9cbf382d8873"
     },
     {
       "path": "run.py",
