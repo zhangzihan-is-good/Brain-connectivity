@@ -26,13 +26,15 @@ def main(argv=None):
     p.add_argument('--method',default='all',choices=('all','RGIC','Pearson','GCMI','Lag_peak','Gaussian_TE','VAR_Granger','PSI','PhiID_unique_transfer','Coherence'))
     p.add_argument('--data-workspace');p.add_argument('--output')
     args,extra=p.parse_known_args(argv)
-    from migration import verify,read
+    from _paths import activate
+    activate()
+    from _execution import verify,read
     check=verify()
     if args.mode=='verify':
         if extra:p.error('Unexpected extra arguments')
         print(json.dumps(check,ensure_ascii=False,indent=2));return
     if args.mode=='plan-main':
-        rows=read(BASE/'configs/reproduction/selected_configurations.json')['rows']
+        rows=read(BASE/'configs/main_models.json')['rows']
         print(json.dumps(dict(status='PLAN_FIXED_CONFIGURATION_REFIT',accepted_units=len(rows),methods_per_unit=9,
             total_fold_method_fits=len(rows)*9,classifiers=sorted({r['classifier'] for r in rows}),
             data_payloads_included=False,execution_performed=False,all_label_F_screening=True,
@@ -40,20 +42,20 @@ def main(argv=None):
     if args.mode=='main':
         if extra or any(getattr(args,k) is None for k in ('classifier','atlas','window','fold','data_workspace','output')):
             p.error('main requires --classifier --atlas --window --fold --data-workspace --output')
-        from main_reproduce import execute
+        from main import execute
         return execute(args)
     if args.mode=='supplements':
         if args.classifier:extra+=['--classifier',args.classifier]
         if args.fold is not None:extra+=['--fold',str(args.fold)]
         if args.data_workspace:extra+=['--data-workspace',args.data_workspace]
         if args.output:extra+=['--output',args.output]
-        return module('_merged_abide_selected',BASE/'code/supplements/run_selected.py').main(extra)
+        return module('_merged_abide_selected',BASE/'supplements/run_selected.py').main(extra)
     if args.output:extra+=['--output',args.output]
     # The unchanged figure CLI parses sys.argv; isolate its arguments locally.
     old=sys.argv
     try:
-        sys.argv=[str(BASE/'code/figures/plot_selected_auroc.py')]+extra
-        return module('_merged_abide_figures',BASE/'code/figures/plot_selected_auroc.py').main()
+        sys.argv=[str(BASE/'figures/plot_selected_auroc.py')]+extra
+        return module('_merged_abide_figures',BASE/'figures/plot_selected_auroc.py').main()
     finally:sys.argv=old
 
 

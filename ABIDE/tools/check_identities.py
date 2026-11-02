@@ -13,7 +13,7 @@ from types import SimpleNamespace
 
 sys.dont_write_bytecode=True
 BASE=Path(__file__).resolve().parents[1]
-P4=BASE/'code/main/source_tree/freeenergy/第四部分'
+CORE=BASE/'core'
 
 def load(name,path):
     spec=importlib.util.spec_from_file_location(name,path)
@@ -22,11 +22,11 @@ def load(name,path):
 def check(data):
     load('_identity_integrity',BASE/'tools/integrity.py').check()
     # Reuse the original process-local DLL initializer before h5py/NumPy.
-    load('_identity_runtime',P4/'code/runtime.py')
+    load('_identity_runtime',CORE/'runtime.py')
     import h5py
     import numpy as np
-    runner=load('_identity_selected_runner',BASE/'code/supplements/run_selected.py')
-    controls=load('_identity_controls',P4/'ABIDE补充实验_FCN_LR_本机_20261030/code/control_features.py')
+    runner=load('_identity_selected_runner',BASE/'supplements/run_selected.py')
+    controls=load('_identity_controls',BASE/'supplements/control_features.py')
     def need(value,message):
         if not value:raise RuntimeError(message)
     with h5py.File(data/'dataset/abide_data/04_rgc_intermediate_data/rgc_base.hdf5','r') as base, h5py.File(data/'dataset/abide_data/03_pearson_fc/abide.hdf5','r') as old:
@@ -54,7 +54,7 @@ def check(data):
     cfg,items=runner.plan()
     low_ids=runner.hydrate_identities(SimpleNamespace(controls=controls,clean=clean),engine,items,
         data/'dataset/abide_data/01_subject_metadata/Phenotypic_V1_0b_preprocessed1.csv')
-    selected=runner.read(BASE/'configs/reproduction/selected_configurations.json')['rows']
+    selected=runner.read(BASE/'configs/main_models.json')['rows']
     for row in selected:
         actual={role:len(rows) for role,rows in splits[row['atlas']][str(row['fold'])].items()}
         need(actual==row['roles'],'Fixed main configuration role counts differ')

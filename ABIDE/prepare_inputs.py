@@ -64,8 +64,8 @@ def check(data_workspace, *, scope='main', hashes=False, identities=False, detai
     integrity = load('_abide_input_integrity', BASE/'tools/integrity.py')
     integrity.check()
     data = Path(data_workspace).expanduser().resolve()
-    contract = read(BASE/'configs/main/input_contract.json')
-    selected = read(BASE/'configs/supplements/selected_tasks.json')
+    contract = read(BASE/'configs/input_contract.json')
+    selected = read(BASE/'configs/supplement_tasks.json')
     required, errors = {}, []
     def need(ok, message):
         if not ok: errors.append(message)
@@ -84,7 +84,7 @@ def check(data_workspace, *, scope='main', hashes=False, identities=False, detai
     for row in selected['original_input_bindings']:
         add(row['relative_workspace'], 'fixed_input_binding', row['sha256'])
     common_id_hash = None
-    report_source = BASE/'code/main/source_tree/freeenergy/第四部分/按论文报告复现_20261027/code/report_data.py'
+    report_source = BASE/'core/report_data.py'
     text = report_source.read_text(encoding='utf-8-sig')
     nodes = [n for c in ast.parse(text).body if isinstance(c, ast.ClassDef) and c.name=='ReportData'
              for n in c.body if isinstance(n, ast.FunctionDef) and n.name=='_compute_missing_native']
@@ -149,7 +149,7 @@ def check(data_workspace, *, scope='main', hashes=False, identities=False, detai
             index = {row['subject_id']:row for row in rows}
             need(len(ids)==len(set(ids))==1035 and len(rows)==len(index)==1035 and set(ids)==set(index), 'Raw cohort/source identity roster differs')
             need(identity(sorted(ids))==selected['cohorts']['full']['sorted_ids_sha256'], 'Raw cohort differs from fixed participant contract')
-            main_rows = read(BASE/'configs/reproduction/selected_configurations.json')['rows']
+            main_rows = read(BASE/'configs/main_models.json')['rows']
             for atlas in ATLAS_ROIS:
                 for fold in range(10):
                     roles = cohort_doc['folds'][atlas][str(fold)]
@@ -189,7 +189,7 @@ def check(data_workspace, *, scope='main', hashes=False, identities=False, detai
                             need(cohort_doc['folds'][atlas][str(fold)][role]==original, 'Raw cohort role/order differs from original HDF5')
             identity_result['raw_cohort_role_arrays_checked'] = 90
     result = dict(status='FAIL' if errors else 'PASS_FILE_HASHES' if hashes else 'PASS_PATHS_AND_METADATA',
-        scope=scope, data_workspace=str(data), contract=str(BASE/'configs/main/input_contract.json'),
+        scope=scope, data_workspace=str(data), contract=str(BASE/'configs/input_contract.json'),
         contract_files=len(contract['requirements']),required_files=len(required),present_files=present,
         snapshot_manifests_checked=metadata_count,raw_ROI_files=raw_count,SHA256_files_checked=hash_checked,
         large_payload_SHA256_not_checked=payload_hash_skipped,identity_check=identity_result,

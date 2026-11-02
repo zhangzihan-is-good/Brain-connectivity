@@ -14,7 +14,7 @@ import sys
 sys.dont_write_bytecode = True
 BASE = Path(__file__).resolve().parents[1]
 MERGE = BASE.parent
-MANIFEST = BASE/'configs/integrity/active_manifest.json'
+MANIFEST = BASE/'configs/integrity.json'
 SHARED = ('rgic_backend.py','rgic_shared.py','rgic_profiles_abide.py',
           'io_shared.py','shared_paths.py','estimators_shared.py','_vendor/IC_PROVENANCE.json')
 
@@ -31,7 +31,7 @@ def inventory():
              and '__pycache__' not in p.parts and p.suffix not in ('.pyc','.pyo')]
     for path in files:
         relative = path.relative_to(BASE)
-        if relative.parts[0] in ('results','figures','report','audit','archive','_packaging_work'):
+        if relative.parts[0] in ('results','report','audit','archive','_packaging_work'):
             raise RuntimeError('Existing output/archive is not an active input: '+str(relative))
         if path.stem.lower() == 'readme' or path.suffix not in ('.py','.json','.txt'):
             raise RuntimeError('Only active code/configuration is allowed: '+str(relative))
