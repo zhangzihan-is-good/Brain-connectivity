@@ -246,8 +246,6 @@ After all selected records complete, summarize the same output directory. Summar
 python -B ABIDE/run.py --mode supplements --execute --action summarize --data-workspace "DATA_WORKSPACE" --output "NEW_ABIDE_SUPPLEMENTS"
 ```
 
-**Interpretation:** `protocol.full_labels_used_for_F=true` in `main_models.json` means supervised F screening uses train, validation and test labels. The resulting AUROC describes discrimination under this screening design rather than independent held-out feature selection. Only RGIC received the broad validation search, with comparator methods using matched selected settings. Demographics enter the classifier, not the RGIC formula. Fixed feature columns still involve classifier refitting; truncation/noise experiments refit classifiers under each condition.
-
 ## AI assistance and human responsibility
 
 Development used AI-assisted coding for implementation, testing and documentation. Human authors have reviewed the mathematical definitions, reference-state isolation, input handling, numerical behavior, experimental protocols and scientific interpretation, and remains responsible for the code, its scientific interpretation, and release decisions.
