@@ -240,4 +240,4 @@ python -B ABIDE/run.py --mode supplements --execute --action summarize --data-wo
 
 ## AI assistance and human responsibility
 
-Development used AI-assisted coding for implementation, testing and documentation. Human authors are responsible for reviewing the mathematical definitions, reference-state isolation, input handling, numerical behavior, experimental protocols and scientific interpretation, and for correctness and release decisions.
+Development used AI-assisted coding for implementation, testing and documentation. Human authors have reviewed the mathematical definitions, reference-state isolation, input handling, numerical behavior, experimental protocols and scientific interpretation, and remains responsible for the code, its scientific interpretation, and release decisions.
