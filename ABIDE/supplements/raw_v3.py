@@ -369,7 +369,7 @@ def checkpoint(value, subject_id, condition):
             atomic(note_path, item['receipt'])
         prepared.unlink()
     if path.exists() or note_path.exists():
-        need(path.is_file() and note_path.is_file(), 'Unjournaled incomplete checkpoint; explicit review required')
+        need(path.is_file() and note_path.is_file(), 'Checkpoint array and receipt files must both exist')
         note = read(note_path)
         need(note['recipe'] == expected and sha(path) == note['npz_sha256'], 'Checkpoint recipe/bytes changed')
         with np.load(path, allow_pickle=False) as handle:

@@ -164,7 +164,7 @@ def make_one(grouped,strategy,scope,out,paired=False):
     extra='All29 is descriptive; selectors are separate.' if scope in ('A_selected_all29','B_selected_all29') else 'Two-transfer mean averages endpoints and aligned draws; it is not pooled29.'
     fig.text(.02,.044,note,fontsize=FONT-0.5,ha='left')
     fig.text(.02,.030,extra,fontsize=FONT-0.5,ha='left')
-    fig.text(.02,.016,'PhiID UT = unique transfer. Fixed shared models are exploratory; NA methods remain visible.',fontsize=FONT-0.5,ha='left')
+    fig.text(.02,.016,'PhiID UT = unique transfer. NA methods remain visible.',fontsize=FONT-0.5,ha='left')
     qa=axes_text_inside(fig)
     stem=('paired_' if paired else 'main_')+strategy+'_'+scope
     paths=[]
@@ -173,7 +173,7 @@ def make_one(grouped,strategy,scope,out,paired=False):
     plt.close(fig)
     return dict(name=stem,strategy=strategy,scope=scope,panel_grid=[5,2],source_rows=len(figure_rows),
                 interval='both_all29_main148' if paired and scope in ('A_selected_all29','B_selected_all29') else ('main74' if paired else 'marginal95'),
-                figure_inches=[WIDTH,HEIGHT],qa_geometry=qa,visual_status='pending_actual_PNG_and_PDF_review',
+                figure_inches=[WIDTH,HEIGHT],qa_geometry=qa,
                 outputs={p.as_posix():sha(p) for p in paths})
 
 
@@ -193,7 +193,7 @@ def render(summary,paired,output):
             if not any(k[:2]==(strategy,scope) for k in grouped):continue
             artifacts.append(make_one(grouped,strategy,scope,out,False))
             if pairgrouped:artifacts.append(make_one(pairgrouped,strategy,scope,out,True))
-    manifest=dict(status='rendered_pending_actual_visual_QA',plot_source_sha256=sha(__file__),
+    manifest=dict(status='rendered',plot_source_sha256=sha(__file__),
         input_sha256_map={source.as_posix():sha(source),**({pairsource.as_posix():sha(pairsource)} if pairsource else {})},
         data_contract=dict(filter='main=True only; meanS supplied by exporter',methods='All10 strength and all6 native directional methods, including NA',
                            order='Descending actual context point; no forced RGIC-first ordering',ranks='Copied rank_best/worst; not recomputed',

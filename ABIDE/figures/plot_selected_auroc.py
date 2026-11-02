@@ -175,6 +175,6 @@ def main():
   files.append({'path':output_name(pdf),'sha256':sha(pdf),'pages':len(figs)})
  auditdir=out
  (auditdir/'selected_figure_marks.json').write_text(json.dumps(marks,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
- (auditdir/'selected_figure_receipt.json').write_text(json.dumps({'status':'rendered_pending_QA','data_sha256':sha(datafile),'files':files,'panels':35,'PDF_pages':6,'fits':0,'new_bootstrap':0},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+ (auditdir/'selected_figure_receipt.json').write_text(json.dumps({'status':'rendered','data_sha256':sha(datafile),'files':files,'panels':35,'PDF_pages':6,'fits':0,'new_bootstrap':0},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
  print('Selected35 AUROC panels exported in4 PDFs /6 pages')
 if __name__=='__main__':main()

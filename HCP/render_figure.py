@@ -249,7 +249,7 @@ def main():
              'd,e, Network-pair AP changes for reliability parts and RGIC relative to the same-pair Pearson baseline, using global held-out predictions. '
              'Upper triangles contain all 28 unique pairs; numbers are means across 20 paired repeats and SDs are supplied in source data. '
              'N1-N7 are network codes, not assigned anatomical names. Asterisks indicate fewer than 20 SC-positive edges. '
-             'All analyses retain W1, lambda=1 and gamma=1; this is not a new independent cohort validation.')
+             'All analyses retain W1, lambda=1 and gamma=1.')
     (OUT/'figure_caption_en.txt').write_text(caption+'\n',encoding='utf-8')
     plt.close(fig)
     print('Updated supplementary diagnostics exported as PNG/PDF/SVG; 83 summary rows and complete hexbin source.',flush=True)

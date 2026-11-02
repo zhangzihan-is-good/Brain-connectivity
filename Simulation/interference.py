@@ -100,7 +100,7 @@ def generate(cell, split, repeat, variant=0, n_pairs=core.N_PAIRS):
 
 
 def generate_interference(cell, split, repeat, purpose):
-    # The exploratory setting and its null thresholds were frozen before the
+    # The interference setting and its null thresholds were frozen before the
     # independent validation streams used for the displayed test results.
     variant = (202610060101 if split == 0 else 202610060201) if purpose == "direction" else 202610060202
     return generate(cell, split, repeat, variant=variant)

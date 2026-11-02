@@ -63,8 +63,8 @@
     },
     {
       "path": "figures/plot_selected_auroc.py",
-      "bytes": 15368,
-      "sha256": "d73d92e8f1ad830feb3681851c4a95159f3c5aa2dfee699532b3b43984bb308c"
+      "bytes": 15357,
+      "sha256": "1d012c1bc8f553dca2e3223d6a9f573168c34a9db05aa9dcafc56b4696334e7e"
     },
     {
       "path": "figures/requirements.txt",
@@ -158,8 +158,8 @@
     },
     {
       "path": "supplements/raw_v3.py",
-      "bytes": 31864,
-      "sha256": "79e2d53e3ee9367c47647b477caccfd089193329fa506d7386a85328d1d9bcf2"
+      "bytes": 31855,
+      "sha256": "35b521d2ceacb6d881aec26c5666f4dfa2712a60e38bb142b38f852bdcd59d56"
     },
     {
       "path": "supplements/run_selected.py",
