@@ -1,18 +1,16 @@
 # Reliability-Gated Information Connectivity (RGIC): research code
 
-Research code for **Mapping human brain connectivity through reliable temporal relationships**, by Zihan Zhang, Junhao Gao, Georgios Christopoulos, Xiao Ding, Yuting Chen, Juntong Du, Xia Liang, Bing Qin and Ting Liu. The four experiment folders implement simulated-signal analyses, anatomical-connectivity prediction in HCP, repeated-scan evaluation in HNU and autism classification in ABIDE.
+Reliability-Gated Information Connectivity (RGIC) combines zero-lag correlation, lag-related correlation gain, temporal discounting, amplitude compensation and cross-recording reliability. The four experiment folders implement simulated-signal analyses, anatomical-connectivity prediction in HCP, repeated-scan evaluation in HNU and autism classification in ABIDE.
 
-This repository contains scientific code, dependencies, fixed parameters, input specifications, source notices and synthetic checks. Citation metadata is provided in [CITATION.cff](CITATION.cff). Identify the software revision used in an analysis with `git rev-parse HEAD`.
+This guide describes the code structure, algorithms, numerical environments, input interfaces and execution commands. Identify the software revision used in an analysis with `git rev-parse HEAD`.
 
 ## Repository structure
 
 ```text
 .
 ├── README.md
-├── LICENSE                    MIT license
-├── CITATION.cff               Software citation metadata
 ├── run.py                      Common launcher
-├── run_tests.py                Dataset-free source/core/upstream checks
+├── run_tests.py                Source/core/upstream checks
 ├── run_public_tests.py         Synthetic and shared-interface unit tests
 ├── rgic_shared.py             Experiment-facing RGIC interface
 ├── rgic_backend.py            Pinned IC primitives and compatibility profiles
@@ -23,8 +21,8 @@ This repository contains scientific code, dependencies, fixed parameters, input 
 ├── requirements-demo.txt
 ├── requirements-ic.txt
 ├── examples/                  Synthetic example code
-├── tests/                     Data-free validation code; no result fixtures
-├── tools/                     Source/documentation/release checking code
+├── tests/                     Synthetic validation code
+├── tools/                     Source and documentation checks
 ├── Simulation/                Main and supplementary simulated-signal analyses
 ├── HCP/                       Cached-feature anatomical prediction
 ├── HNU/                       Fixed-model test–retest analyses
@@ -32,7 +30,7 @@ This repository contains scientific code, dependencies, fixed parameters, input 
 └── _vendor/                   Selected, hash-verified IC source and notices
 ```
 
-Necessary final parameter selections are configuration inputs, not precomputed performance tables. Human-study measurements and derived input bundles must be obtained separately. Running the programs creates new outputs at the requested locations.
+Fixed parameter selections are configuration inputs. Running the programs creates new outputs at the requested locations.
 
 ## Installation and numerical environments
 
@@ -64,7 +62,7 @@ SVM/LR main refits use CPU. Neural model device settings are retained; the suppl
 
 Use the dependency versions listed in each experiment's requirements file. The data-free example and shared-interface checks use the separate environment in `requirements-demo.txt`.
 
-## Quick start: no participant data required
+## Quick start
 
 From this directory:
 
@@ -79,7 +77,6 @@ Expected summary fields include:
 
 ```json
 {
-  "participant_data_used": false,
   "n_reference": 8,
   "n_targets": 3,
   "first_pair_lag_samples": [1, 1, 1],
@@ -90,7 +87,7 @@ Expected summary fields include:
 
 Measured computation time was about 0.025 seconds, excluding interpreter startup, in the tested Python 3.12.14 / NumPy 2.3.5 environment. This is a synthetic library demonstration.
 
-`run_tests.py` checks the selected IC source hashes, the synthetic/shared-interface tests and upstream scientific/file-roundtrip tests. It uses no original sibling checkout, participant data, saved regression fixture or GPU. `run_public_tests.py` runs only the synthetic/shared-interface subset.
+`run_tests.py` checks the selected IC source hashes, synthetic/shared-interface behavior and upstream scientific/file-roundtrip behavior. `run_public_tests.py` runs the synthetic/shared-interface subset.
 
 ## Path and output conventions
 
@@ -108,27 +105,9 @@ It executes a selected runner in that experiment's directory. Supply **absolute 
 
 `FREEENERGY_WORKSPACE` identifies the directory containing an experiment's external data layout. The explicit `--inputs`, `--data-root` and `--data-workspace` options select the locations used by each command below. Write generated outputs to a separate new directory.
 
-## Data inputs and access
-
-There are three kinds of files in this workflow:
-
-- **Source data:** MRI recordings and associated metadata from HCP, HNU1 or ABIDE. Use the official source links in the experiment sections and follow the provider's terms.
-- **Study inputs:** source data processed into the exact ROI time series, edge-feature arrays, participant/session order and fixed splits consumed by these programs. These are input data products, distinct from final performance tables or fitted models.
-- **Outputs:** new metrics, predictions and models produced when you run an experiment.
-
-To obtain matching study inputs, [open an input-access request](https://github.com/zhangzihan-is-good/Brain-connectivity/issues/new?title=Study%20input%20access%20request) with the maintainers. Specify the experiment, the repository commit from `git rev-parse HEAD`, your operating system/Python version and which files in the table below you need. For ABIDE, also include the resolved local directory where you intend to place the data. Arrange data transfer under the original providers' conditions; do not attach participant data or diagnosis tables to a public issue.
-
-| Experiment | Study inputs to request | Local preparation/check |
-| --- | --- | --- |
-| HCP | `inputs.npz`, `appendix_inputs.npz`, `sc_weights.npy`, with matching atlas/edge order and fixed folds | [HCP/prepare_inputs.py](HCP/prepare_inputs.py) |
-| HNU | 290 preprocessed ROI NPY files and their `input_config.json` participant/session, ROI-order and A/B-group contract | [HNU/prepare_inputs.py](HNU/prepare_inputs.py) |
-| ABIDE | The HDF5, phenotype, feature-cache and manifest files listed in [input_contract.json](ABIDE/configs/main/input_contract.json); include the raw ROI inputs for signal-length/noise analyses | [ABIDE/prepare_inputs.py](ABIDE/prepare_inputs.py) |
-
-The preparation tools validate files supplied to them. HCP can additionally copy its three files byte-for-byte; HNU can install the supplied contract for local use. They retain the supplied numerical values, participant mappings and split assignments. The synthetic example above requires none of these study inputs.
-
 ## 1. Simulated-signal analyses
 
-**Paper correspondence:** main and supplementary simulated-signal analyses of direction and strength. Inputs are generated from fixed seeds; no external dataset is required.
+**Implemented analyses:** main and supplementary simulated-signal evaluations of direction and strength. Inputs are generated from fixed seeds.
 
 The fixed protocol has two acquisition profiles, three degradation settings and six relationship types (36 conditions). Each world has 24 pairs, 16 reference recordings and three target recordings. There are four development and ten test repeats per condition. The main direction cohort has 360 test worlds, and native strength uses 300 separately generated worlds.
 
@@ -152,13 +131,11 @@ python -B Simulation/appendix_experiment.py --workers 4 --output outputs/simulat
 
 These cover signal spectra/tSNR/autocorrelation, lag peaks, W2, profile-specific AP, lag error, noise/knee sensitivity, nearest-neighbor TE, development-selected classical settings, PSI standardization and reference-supported direction scores. Four-pair expensive-comparator and full-24-pair reference summaries are separate outputs.
 
-Use the default development/test counts for the article protocol. `--quick` shortens the supplementary run for a smoke check.
+Use the default development/test counts for the full simulation run. `--quick` shortens the supplementary run for a smoke check.
 
 ## 2. HCP anatomical-connectivity prediction
 
-**Paper correspondence:** anatomical-support/weight prediction, controls, subgroup analyses and supplementary feature/network diagnostics.
-
-Source imaging is available through [HCP Young Adult](https://www.humanconnectome.org/study/hcp-young-adult); accept the relevant data-use terms. Structural-connectome context follows [Liu et al., NeuroImage 2023](https://doi.org/10.1016/j.neuroimage.2023.120276). Request the three study-specific derived files from the maintainers using the input-access procedure above; the HCP and Liu links identify upstream sources, not downloads of these three files.
+**Implemented analyses:** anatomical-support/weight prediction, controls, subgroup analyses and supplementary feature/network diagnostics.
 
 Provide one directory containing:
 
@@ -193,11 +170,9 @@ This workflow consumes prepared group-level caches with fixed gates and potentia
 
 ## 3. HNU test–retest analyses
 
-**Paper correspondence:** local/global/high-gain strength, single-scan direction, consensus direction and supplementary support/orientation, roles, degree and participant-specificity readouts.
+**Implemented analyses:** local/global/high-gain strength, single-scan direction, consensus direction and supplementary support/orientation, roles, degree and participant-specificity readouts.
 
-Obtain source imaging through [HNU1 / CoRR](https://fcon_1000.projects.nitrc.org/indi/CoRR/html/hnu_1.html), [dataset DOI](https://doi.org/10.15387/fcp_indi.corr.hnu1), or the provider's [S3 access instructions](https://fcon_1000.projects.nitrc.org/indi/s3/index.html). Follow the provider's data-use terms. For the paper's input representation, request the 290 preprocessed ROI files and their matching input contract from the maintainers using the input-access procedure above.
-
-The HNU study-input package consists of 290 preprocessed NPY files (29 participants × ten recordings) and a JSON contract. Its `input_contract` describes array shape/dtype/TR; `roi_order` specifies the 109 columns; `halves` records the A/B participant groups; and `recordings` records each file's participant, scan order, session, filename and SHA256. Keep the contract with the files it describes.
+The HNU input interface accepts 290 preprocessed NPY files (29 participants × ten recordings) and a JSON configuration. Its `input_contract` describes array shape/dtype/TR; `roi_order` specifies the 109 columns; `halves` records the A/B participant groups; and `recordings` records each file's participant, scan order, session, filename and SHA256.
 
 Each NPY must be finite float32 with shape **295×109**, matching the contract's identities, ordering and hashes. These inputs have the first five volumes removed and are standardized region-wise. The runner then demeans each signal and applies fourth-order zero-phase Butterworth filtering at 0.01–0.1 Hz with TR=2 seconds.
 
@@ -208,7 +183,7 @@ python -B HNU/prepare_inputs.py --contract "HNU_INPUT_CONTRACT" --data-root "HNU
 python -B HNU/prepare_inputs.py --contract "HNU_INPUT_CONTRACT" --data-root "HNU_NPY_DIR" --install
 ```
 
-The tool checks all 290 files and the contract's participant/scan/ROI mapping. An existing different local contract is preserved and reported as an error. The installed participant-linked contract stays local and is excluded by `.gitignore`.
+The tool checks all 290 files and the contract's participant/scan/ROI mapping. An existing different local contract is preserved and reported as an error.
 
 Compute the analyses:
 
@@ -226,13 +201,13 @@ The runner evaluates the fixed configurations in `HNU/models.json`. Additional `
 
 ## 4. ABIDE classification and sensitivity analyses
 
-**Paper correspondence:** autism classification, direction representation, component removal, demographic inputs, low-motion data, signal-length and measurement-noise analyses.
+**Implemented analyses:** autism classification, direction representation, component removal, demographic inputs, low-motion subsets, signal-length and measurement-noise analyses.
 
 Classifier implementations include SVM, logistic regression, FCN, GCN, LSTM, Transformer and MADE. Fixed refits use the configurations keyed by classifier, atlas, lag window and fold in `ABIDE/configs/reproduction/`; runner options are listed by `--help`.
 
-Obtain ABIDE-I source data from [ABIDE](https://fcon_1000.projects.nitrc.org/indi/abide/) and [preprocessed access](https://fcon_1000.projects.nitrc.org/indi/abide/preprocessed.html), following the provider's terms. This protocol uses CPAC `filt_global` ROI products and a fixed cohort of 1,035 participants (505 ASD, 530 controls).
+The ABIDE workflow uses CPAC `filt_global` ROI products and a fixed cohort of 1,035 participants (505 ASD, 530 controls).
 
-Request the ABIDE study-input package using the input-access procedure above. [ABIDE/configs/main/input_contract.json](ABIDE/configs/main/input_contract.json) lists its 94 base files and recorded array hashes. `DATA_WORKSPACE` means the local root of this external package, separate from the code checkout. Paths below it are literal keys in the package format:
+[ABIDE/configs/main/input_contract.json](ABIDE/configs/main/input_contract.json) lists the 94 base input files and recorded array hashes. `DATA_WORKSPACE` is the input root passed to `--data-workspace`. Paths below it are literal keys in the input format:
 
 ```text
 DATA_WORKSPACE/
@@ -251,17 +226,17 @@ DATA_WORKSPACE/
 | `第三部分最终版/code/estimators.py` and `第四部分/code/prepare_raw.py` | Source copies used by the native-cache provenance checks |
 | `第四部分/ABIDE后续分类器队列_20261027/inputs/` | Cohort and fixed-fold metadata for signal-length/noise analyses |
 
-The Chinese directory names are fixed on-disk keys for the input types in this table. Keep those keys when extracting the package. Obtain its source-reference copies and manifests together with the arrays.
+The Chinese directory names are fixed on-disk keys for the input types in this table. The input reader uses those keys together with the source-reference files and manifests.
 
 The primary files are `dataset/abide_data/04_rgc_intermediate_data/rgc_base.hdf5` and `dataset/abide_data/03_pearson_fc/abide.hdf5`. The base HDF5 uses `patients/{FILE_ID}` with `y` (ASD=0, control=1), `site`, `sex` and `age` attributes. The Pearson file stores the ordered train/validation/test identities at `experiments/{aal,cc200,ez}_whole/{0..9}/{train,valid,test}`. The phenotype CSV is `dataset/abide_data/01_subject_metadata/Phenotypic_V1_0b_preprocessed1.csv`, with `FILE_ID`, `DX_GROUP`, `SEX`, `AGE_AT_SCAN`, `HANDEDNESS_CATEGORY`, `FIQ` and `func_mean_fd` fields.
 
 HDF5/metadata bind participant identities, labels, atlas-specific train/validation/test roles and ROI order. AAL/EZ use 116 regions (6,670 pairs); CC200 uses 200 (19,900 pairs). The checker accepts a package when its NPZ/validation JSON, aligned NPY arrays, metadata/source recipes, runtime versions and identity hashes match the fixed contracts.
 
-The native-cache reader hashes the two source-reference files named in the table. Identical source bytes are included as `estimators_shared.py` and `ABIDE/code/main/source_tree/freeenergy/第四部分/code/prepare_raw.py`. A recipe manifest records source hashes, runtime versions, array identities and absolute source-path keys. The checker compares the resolved workspace root with those recorded keys. If they differ, use the declared placement or arrange a matching package with the maintainers; include your intended resolved root in the request. Editing path strings or merely exposing a directory alias does not establish a matching recipe.
+The native-cache reader hashes the two source-reference files named in the table. Identical source bytes are included as `estimators_shared.py` and `ABIDE/code/main/source_tree/freeenergy/第四部分/code/prepare_raw.py`. A recipe manifest records source hashes, runtime versions, array identities and absolute source-path keys. The checker reports the manifest's declared root, the current resolved workspace root and whether the path keys match. Source-path keys are compared literally after resolving the workspace.
 
 Signal-length/noise analyses additionally require `第四部分/ABIDE后续分类器队列_20261027/inputs/original_cohort_and_folds.json` and the AAL recordings at `第四部分/inputs/raw_timeseries/aal/{FILE_ID}_rois_aal.1D`, including the matching ROI/header/TR metadata specified by the input contract.
 
-Preflight the package before fitting:
+Check inputs before fitting:
 
 ```bash
 python -B ABIDE/prepare_inputs.py --data-workspace "DATA_WORKSPACE" --list
@@ -280,7 +255,7 @@ python -B ABIDE/run.py --mode supplements --plan
 python -B ABIDE/tools/check_identities.py --data-workspace "DATA_WORKSPACE"
 ```
 
-Refit one fixed main unit using a new/empty output directory outside the code and protected data locations:
+Refit one fixed main unit using a new/empty output directory:
 
 ```bash
 python -B ABIDE/run.py --mode main --classifier logistic --atlas aal --window 1 --fold 0 --data-workspace "DATA_WORKSPACE" --output "NEW_ABIDE_RUN"
@@ -316,24 +291,8 @@ HNU and ABIDE share the same native estimator implementation; project-specific e
 
 Run `python -B run_tests.py` for the checks included in this checkout: pinned upstream source hashes, synthetic reference/target separation, known lag direction, input/order validation, numerical profiles and file round trips. These checks generate their inputs locally. Lag direction characterizes observed BOLD temporal ordering; native strength errors compare estimators with different scales.
 
-## Data governance, licensing and citation
-
-Participant measurements, per-person diagnosis records, internal HPC material and saved results are not part of this code-only tree. Input identities/hashes required for reproducibility remain configuration metadata. Obtain and use data under the original providers' conditions; do not post participant-level data in public issues.
-
-The project's original code and documentation are released under the [MIT License](LICENSE). Third-party components retain their applicable licenses, copyright notices and attribution requirements. Source datasets remain subject to their providers' data-use conditions.
-
-| Component | License and attribution |
-| --- | --- |
-| Project code | MIT; see [LICENSE](LICENSE). |
-| PhiID / phyid | Preserve the complete applicable [BSD-3-Clause notice](https://github.com/Imperial-MIND-lab/integrated-info-decomp/blob/6c5f2e9d33c985efbdf875d45cb5a2a6a5cdbf44/LICENSE), also retained at `Simulation/LICENSE`. |
-| GCMI reference | The recorded [upstream reference carries GPLv3](https://github.com/robince/gcmi/blob/cd5426bb4c6b7094858f37c3710a4ae9367f8ef1/LICENSE). Applicable upstream copyright and license notices remain in force. |
-| MADE and other neural models | The official [MADE-for-ASD source carries Apache-2.0](https://github.com/hasan-rakibul/MADE-for-ASD/blob/main/LICENSE). Model source attributions are recorded in `ABIDE/configs/main/neural_vendor_provenance.json`. |
-| Numerical dependencies | External libraries retain their respective licenses. |
-
-Cite Zihan Zhang et al., *Mapping human brain connectivity through reliable temporal relationships*, together with **Brain-connectivity: RGIC research code**, its repository URL and the Git commit used for your analysis. [CITATION.cff](CITATION.cff) supplies the software authors and citation metadata. The related method package is [zhangzihan-is-good/IC](https://github.com/zhangzihan-is-good/IC).
-
-For issues, include the command, environment, a minimal synthetic reproducer and expected/actual behavior. Do not include credentials, protected data or participant-linked predictions.
+For code issues, include the command, environment, a minimal synthetic reproducer and expected/actual behavior.
 
 ## AI assistance and human responsibility
 
-Development and restructuring used AI-assisted coding for implementation, refactoring, testing and documentation, following the disclosure approach in the [IC method package](https://github.com/zhangzihan-is-good/IC#ai-assistance-and-human-responsibility). Human authors are responsible for reviewing the mathematical definitions, reference-state isolation, input handling, numerical behavior, experimental protocols and scientific interpretation, and for correctness, data governance and release decisions.
+Development used AI-assisted coding for implementation, testing and documentation. Human authors are responsible for reviewing the mathematical definitions, reference-state isolation, input handling, numerical behavior, experimental protocols and scientific interpretation, and for correctness and release decisions.
