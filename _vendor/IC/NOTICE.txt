@@ -1,0 +1,4 @@
+RGIC 0.1.0a3
+
+A minimal implementation of Reliability-Gated Information Connectivity.
+Intended for source installation from a Git repository.

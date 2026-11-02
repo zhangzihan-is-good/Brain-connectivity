@@ -1,0 +1,54 @@
+{
+  "repository": "https://github.com/zhangzihan-is-good/IC",
+  "commit": "58625fc4a3afd69d451f27b5c279a3c2a3cae90f",
+  "version": "0.1.0a3",
+  "selection": "selected unmodified upstream runtime source, required CLI resource, notice, and synthetic verification code; not a complete upstream source distribution",
+  "algorithm_source_modified": false,
+  "files": [
+    {
+      "path": "rgic/__init__.py",
+      "blob_sha": "f3a91fd30802182317478be57508c5f582a7219e",
+      "role": "runtime_python"
+    },
+    {
+      "path": "rgic/__main__.py",
+      "blob_sha": "916cb7549d0cee015dfa6f19235d93f95ab1e7ab",
+      "role": "runtime_python"
+    },
+    {
+      "path": "rgic/core.py",
+      "blob_sha": "b43cf569d8d21b71269f89a311ca6f8942fa0a05",
+      "role": "runtime_python"
+    },
+    {
+      "path": "rgic/io.py",
+      "blob_sha": "b4582b77d7fed4e811f3171e0a95ceb904e4124a",
+      "role": "runtime_python"
+    },
+    {
+      "path": "rgic/cli.py",
+      "blob_sha": "faa9b5079ddfa79daa0a0435b5f404ff9eed5a90",
+      "role": "runtime_python"
+    },
+    {
+      "path": "rgic/resources/user_guide.md",
+      "blob_sha": "4695ce682f879cf470b56f25de4808ecd3593f78",
+      "role": "runtime_cli_resource"
+    },
+    {
+      "path": "NOTICE.txt",
+      "blob_sha": "7e662b92909318ac413686078bb12a6ba54cb0b6",
+      "role": "upstream_notice"
+    },
+    {
+      "path": "tests/test_file_roundtrip.py",
+      "blob_sha": "89a673da7ddc778087b0a851889fe5370f296f9d",
+      "role": "synthetic_upstream_check"
+    },
+    {
+      "path": "tests/test_scientific_behavior.py",
+      "blob_sha": "05b45a58ba0414b1cbb47a1956d2ec0decc919cf",
+      "role": "synthetic_upstream_check"
+    }
+  ]
+}

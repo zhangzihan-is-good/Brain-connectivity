@@ -1,0 +1,6 @@
+# Python 3.9; article numerical runtime
+numpy==1.21.5
+scipy==1.10.1
+matplotlib==3.5.2
+# Exact math.fsum-equivalent accelerator; absence uses math.fsum.
+llvmlite==0.41.0

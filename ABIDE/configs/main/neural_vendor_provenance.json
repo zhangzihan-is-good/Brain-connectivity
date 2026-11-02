@@ -1,0 +1,55 @@
+{
+  "LSTM_change": "supervised epochs fixed200; checkpoint validACC then CE; internal direction gate1 because caller already applies beta; optional demographic additive logit head documented by adapter",
+  "excludes": [
+    "old fit_predict drivers",
+    "test prediction during candidate fit",
+    "preprocessing",
+    "archive CLI"
+  ],
+  "files": [
+    {
+      "mode": "exact_copy",
+      "path": "H:\\大电脑\\freeenergy\\第四部分\\ABIDE后续分类器队列_20261027\\neural_extension\\code\\vendor_report_networks.py",
+      "sha256": "a305afd286eae16008141a79a21224136ea129d817e5f579eff51a7b0a274b19",
+      "source": "H:\\大电脑\\freeenergy\\第四部分\\按论文报告复现_20261027\\code\\vendored_report_networks.py",
+      "source_sha256": "a305afd286eae16008141a79a21224136ea129d817e5f579eff51a7b0a274b19"
+    },
+    {
+      "mode": "source_AST_segments_without_semantic_edits",
+      "path": "H:\\大电脑\\freeenergy\\第四部分\\ABIDE后续分类器队列_20261027\\neural_extension\\code\\vendor_site_gcn.py",
+      "sha256": "be786619487f18f440344b541270fcbb3e3d31e28362c5946a7b3f205ac4a9b6",
+      "source": "H:\\大电脑\\freeenergy\\第四部分\\按论文报告复现_20261027\\code\\report_classifiers.py",
+      "source_sha256": "15a1cb5661c0d88b3b5885b12f7610306e8444559761f3d9b84ad9237fea550d",
+      "symbols": [
+        "SiteChebK2",
+        "SiteGCN",
+        "site_lhat"
+      ]
+    },
+    {
+      "mode": "source_AST_segments_without_semantic_edits",
+      "path": "H:\\大电脑\\freeenergy\\第四部分\\ABIDE后续分类器队列_20261027\\neural_extension\\code\\vendor_original_made.py",
+      "sha256": "f27044c4fb8a58654408a455ea26a833e05e3ed9b50b43f8cd287a573d026e7d",
+      "source": "H:\\大电脑\\freeenergy\\第四部分\\按论文报告复现_20261027\\code\\original_made_torch.py",
+      "source_sha256": "cb829c533ac95653720ec20647b93846832a18a70fb0677bff03d56a563d2388",
+      "symbols": [
+        "OriginalAE",
+        "OriginalMLP",
+        "_copy_state",
+        "train_original_ae"
+      ]
+    },
+    {
+      "mode": "source_AST_segments_without_semantic_edits",
+      "path": "H:\\大电脑\\freeenergy\\第四部分\\ABIDE后续分类器队列_20261027\\neural_extension\\code\\vendor_roi_profile.py",
+      "sha256": "740638da42ea7f2a6ae831a346d994c4140a992723a535c05bed0eed253c5ee0",
+      "source": "H:\\大电脑\\freeenergy\\第四部分\\分类器全矩阵_20261026\\code\\neural_classifiers.py",
+      "source_sha256": "ec51482a7f254743e644152512be11d2ec7e803d5f41e2f12d0f2663baf2be2c",
+      "symbols": [
+        "ROIProfileNetwork"
+      ]
+    }
+  ],
+  "source_defaults_path": "H:\\大电脑\\freeenergy\\第四部分\\按论文报告复现_20261027\\code\\report_classifier_defaults.json",
+  "source_defaults_sha256": "01782c0c233a4f879864b7c20e14df60271bf90a0006d484d1fb0595c79b010c"
+}

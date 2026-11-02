@@ -1,0 +1,9 @@
+# Original ABIDE classifier/cache runtime; shared-core smoke tests are separate.
+numpy==1.26.4
+scipy==1.10.1
+scikit-learn==1.4.2
+h5py==3.6.0
+torch==2.5.1+cu121
+threadpoolctl
+pandas
+# Plot newly generated summaries: code/figures/requirements.txt

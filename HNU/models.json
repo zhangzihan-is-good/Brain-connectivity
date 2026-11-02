@@ -1,0 +1,97 @@
+{
+  "model_policy": "fixed_early_selected_shared_only",
+  "models": {
+    "A": {
+      "strength": {
+        "method": "RGIC",
+        "config_id": "v7_wide_W2_038",
+        "parameters": {
+          "window": "W2",
+          "lambda": 0.7696449571067874,
+          "gamma": 13.50514135557105,
+          "delta": 0.0001697053790741189,
+          "cap": 0.67637305208873
+        }
+      },
+      "consensus": {
+        "method": "RGIC",
+        "config_id": "grid_0617",
+        "parameters": {
+          "window": "W1",
+          "lambda": 24.0,
+          "gamma": 0.0,
+          "delta": 0.01,
+          "cap": 0.9
+        }
+      },
+      "highgain": {
+        "method": "RGIC",
+        "config_id": "v7_axis_W2_0097",
+        "parameters": {
+          "window": "W2",
+          "lambda": 1,
+          "gamma": 16,
+          "delta": 0,
+          "cap": 0.9
+        }
+      },
+      "pairwise": {
+        "method": "RGIC",
+        "config_id": "grid_0617",
+        "parameters": {
+          "window": "W1",
+          "lambda": 24.0,
+          "gamma": 0.0,
+          "delta": 0.01,
+          "cap": 0.9
+        }
+      }
+    },
+    "B": {
+      "strength": {
+        "method": "RGIC",
+        "config_id": "v7_wide_W2_038",
+        "parameters": {
+          "window": "W2",
+          "lambda": 0.7696449571067874,
+          "gamma": 13.50514135557105,
+          "delta": 0.0001697053790741189,
+          "cap": 0.67637305208873
+        }
+      },
+      "consensus": {
+        "method": "RGIC",
+        "config_id": "anchor_previous_netflow_tuned_W1",
+        "parameters": {
+          "window": "W1",
+          "lambda": 18.82725,
+          "gamma": 0.0,
+          "delta": 0.0,
+          "cap": 0.999
+        }
+      },
+      "highgain": {
+        "method": "RGIC",
+        "config_id": "v7_axis_W2_0097",
+        "parameters": {
+          "window": "W2",
+          "lambda": 1,
+          "gamma": 16,
+          "delta": 0,
+          "cap": 0.9
+        }
+      },
+      "pairwise": {
+        "method": "RGIC",
+        "config_id": "anchor_previous_netflow_tuned_W1",
+        "parameters": {
+          "window": "W1",
+          "lambda": 18.82725,
+          "gamma": 0.0,
+          "delta": 0.0,
+          "cap": 0.999
+        }
+      }
+    }
+  }
+}

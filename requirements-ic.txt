@@ -1,0 +1,4 @@
+# Optional installation of the public raw-recording API in Python >=3.10.
+# Historical experiment environments use the identical, verified source in
+# _vendor/IC through rgic_backend; do not upgrade their numerical dependencies.
+rgic-connectivity @ git+https://github.com/zhangzihan-is-good/IC.git@58625fc4a3afd69d451f27b5c279a3c2a3cae90f
